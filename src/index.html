@@ -84,13 +84,52 @@
 <body>
     <div class="container-fluid">
         <h1>PlagiUM</h1>
-        <div class="border border-primary rounded" style="padding: 2em;">
+        
+        <div class="border border-primary rounded" style="padding: 2em; margin-top: 2em;">
+            <h2>Présentation</h2>
+            <p>PlagiUM est un outil permettant d’afficher les différentes adresses IP utilisées par un étudiant lors de la réalisation d’une activité StudiUM (par exemple un examen en ligne).</p>
+            
+            <h2>Mise en garde</h2>
+            <p>Cet outil doit être utilisé avec toutes les précautions requises, et les données doivent être interprétées avec discernement :</p>
+            <ul>
+                <li>Dans certains cas, le même étudiant peut avoir légitimement eu plusieurs adresses IP (changement d’un poste qui posait un problème, activation d’une connexion VPN, etc.).<br/>
+                    Inversement, il serait difficile de prouver que plusieurs appareils ont été utilisés s’ils ont tous la même adresse IP d'après StudiUM (même réseau domestique, utilisation d'une passerelle ou proxy, etc.).
+                </li>
+                <li>Même s’il permet de faciliter le processus de documentation d’une tentative de fraude, il est recommandé de faire analyser les données par un spécialiste, et de recouper les événements avec la tenue d’un journal lors de l’activité (ex. prise en note des noms et heures de sorties de la salle d’examen, par exemple pour aller aux toilettes).</li>
+                <li>Cet outil ne se substitue pas aux autres mesures de sécurité qu’il convient de mettre en place lors des examens (surveillance physique, configuration d’une clé d’accès communiquée sur place, restriction d’accès par adresse IP si applicable, utilisation de Safe Exam Browser, etc.).</li>
+                <li>Les <span class="ip-highlight">adresses IP en vert</span> sont des adresses IP de l’UdeM. Il convient de valider que ces adresses IP sont légitimes dans le cadre de l’activité (par exemple, les adresses IP des appareils connectés en sans-fil ne sont pas les mêmes que celles des postes de laboratoires informatiques).</li>
+            </ul>
+            
+            <h2>Utilisation</h2>
+            <p>Pour faire l’analyse :</p>
+            <ul>
+                <li>Connectez-vous à votre compte StudiUM et rendez-vous dans l’espace du cours de l’activité à analyser.</li>
+                <li>Cliquez sur <b>Rapport</b>.</li>
+                <li>Rendez-vous ensuite dans <b>Journaux</b>.</li>
+                <li>Dans le menu déroulant <b>Toutes les activités</b>, sélectionnez celle pour laquelle vous souhaitez faire une analyse.</li>
+                <li>Dans le menu déroulant <b>Toutes les actions</b>, sélectionnez Toutes les modifications.</li>
+                <li>Cliquez sur <b>Consulter ces journaux</b>.</li>
+                <li>Rendez-vous tout en bas de la page. Dans l’option <b>Télécharger les données</b>, sélectionnez le format <b>Javascript Object Notation (.json)</b>. Cliquez sur <b>Télécharger</b>.</li>
+                <li>Sur la page de PlagiUM, cliquez sur <b>Choisir un fichier</b> et sélectionnez le fichier <i>.json</i> que vous venez de télécharger de StudiUM.</li>
+                <li>Cliquez sur <b>Traiter le fichier</b>.</li>
+            </ul>
+            
+            <h2>Remarques</h2>
+            <ul>
+                <li>L’analyse des données que vous soumettez dans PlagiUM se fait localement dans votre ordinateur&nbsp;: les données ne sont pas transmises à notre serveur.</li>
+                <li>Les rapports et journaux StudiUM et PlagiUM contiennent des informations personnelles (nom, adresses IP, etc.) : ces documents ne doivent pas être diffusés ou partagés de manière inappropriée afin de respecter la confidentialité et la protection des données personnelles.</li>
+                <li>Lorsque vous passez votre souris sur une adresse IP, une infobulle apparaît affichant l'heure associée à cette adresse IP. Cette heure correspond à la première fois que cette adresse IP a été enregistrée dans le rapport.</li>
+            </ul>
+        </div>
+        
+        <div class="border border-primary rounded" style="padding: 2em; margin-top: 2em;">
             <div class="form-group">
                 <label for="fileInput">Déposez un fichier JSON :</label>
                 <input type="file" id="fileInput" accept=".json" class="form-control">
             </div>
             <button onclick="handleFile()" class="btn btn-primary">Traiter le fichier</button>
         </div>
+
         <div id="resultat" class="d-none" style="margin-top: 2em;">
             <h2>Résultat de l'analyse</h2>
             <table id="resultTable" class="table table-bordered table-striped">
@@ -104,5 +143,11 @@
             </table>
         </div>
     </div>
+    <footer class="bg-body-tertiary text-center text-lg-start" style="margin-top: 2em;">
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
+            PlagiUM, version 2024-02-22<br/>
+            Arnaud d'Alayer, EBSI, Université de Montréal
+        </div>
+      </footer>
 </body>
 </html>
