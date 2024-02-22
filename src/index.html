@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <title>PlagiUM</title>
+    <style>
+        .ip-highlight {
+            color: white;
+            background-color: green;
+        }
+    </style>
+    <script>
+        function handleFile() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    try {
+                        const data = JSON.parse(event.target.result);
+                        const ipsByUser = {};
+                        data[0].forEach(record => {
+                            if (!ipsByUser[record.nomcompletdelutilisateur]) {
+                                ipsByUser[record.nomcompletdelutilisateur] = new Set();
+                            }
+                            ipsByUser[record.nomcompletdelutilisateur].add(record.adresseip);
+                        });
+                        displayTable(ipsByUser);
+                    } catch (e) {
+                        console.error('Le fichier déposé n\'est pas un JSON valide :', e);
+                    }
+                };
+                reader.readAsText(file);
+            } else {
+                console.log('Aucun fichier sélectionné');
+            }
+        }
+
+        function displayTable(ipsByUser) {
+            const table = document.getElementById('resultTable');
+            table.innerHTML = '';
+            const headerRow = document.createElement('tr');
+            const nameHeader = document.createElement('th');
+            nameHeader.textContent = 'Nom complet de l\'utilisateur';
+            const ipHeader = document.createElement('th');
+            ipHeader.textContent = 'Adresses IP uniques';
+            headerRow.appendChild(nameHeader);
+            headerRow.appendChild(ipHeader);
+            table.appendChild(headerRow);
+            for (const user in ipsByUser) {
+                const row = document.createElement('tr');
+                const nameCell = document.createElement('td');
+                nameCell.textContent = user;
+                const ipCell = document.createElement('td');
+                const ips = Array.from(ipsByUser[user]);
+                ips.forEach((ip, index) => {
+                    const span = document.createElement('span');
+                    span.textContent = ip;
+                    if (ip.startsWith('10.') || ip.startsWith('132.204')) {
+                        span.classList.add('ip-highlight');
+                    }
+                    ipCell.appendChild(span);
+                    if (index !== ips.length - 1) {
+                        ipCell.appendChild(document.createTextNode(', '));
+                    }
+                });
+                row.appendChild(nameCell);
+                row.appendChild(ipCell);
+                table.appendChild(row);
+            }
+            table.classList.remove('d-none');
+        }
+    </script>
+</head>
+<body>
+    <div class="container-fluid">
+        <h1>PlagiUM</h1>
+        <div class="border border-primary rounded" style="padding: 2em;">
+            <div class="form-group">
+                <label for="fileInput">Déposez un fichier JSON :</label>
+                <input type="file" id="fileInput" accept=".json" class="form-control">
+            </div>
+            <button onclick="handleFile()" class="btn btn-primary">Traiter le fichier</button>
+        </div>
+        <table id="resultTable" class="table table-bordered table-striped  d-none">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Adresses IP uniques</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</body>
+</html>
