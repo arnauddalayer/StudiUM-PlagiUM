@@ -85,7 +85,15 @@
                     ipsByUser[record.nomcompletdelutilisateur] = {};
                 }
                 if (!ipsByUser[record.nomcompletdelutilisateur][record.adresseip]) {
-                    ipsByUser[record.nomcompletdelutilisateur][record.adresseip] = record.heure;
+                    // Les journaux Moodle sont généralement triés du plus récent au plus ancien.
+                    // On initialise donc les deux valeurs avec la première occurrence, puis on
+                    // mettra à jour la première action au fil du parcours.
+                    ipsByUser[record.nomcompletdelutilisateur][record.adresseip] = {
+                        premiereAction: record.heure,
+                        derniereAction: record.heure
+                    };
+                } else {
+                    ipsByUser[record.nomcompletdelutilisateur][record.adresseip].premiereAction = record.heure;
                 }
             });
             
@@ -111,13 +119,17 @@
                 const ips = Object.keys(ipsByUser[user]);
                 ips.forEach((ip, index) => {
                     const span = document.createElement('span');
+                    const ipDetails = ipsByUser[user][ip];
+                    const tooltipText = `Première action : ${ipDetails.premiereAction}<br>Dernière action : ${ipDetails.derniereAction}`;
+                    const tooltipTextFallback = `Première action : ${ipDetails.premiereAction}\nDernière action : ${ipDetails.derniereAction}`;
                     span.textContent = ip;
                     if (ip.startsWith('10.') || ip.startsWith('132.204')) {
                         span.classList.add('ip-highlight');
                     }
                     span.setAttribute('data-bs-toggle', 'tooltip');
-                    span.setAttribute('data-bs-title', ipsByUser[user][ip]);
-                    span.setAttribute('title', ipsByUser[user][ip]);
+                    span.setAttribute('data-bs-html', 'true');
+                    span.setAttribute('data-bs-title', tooltipText);
+                    span.setAttribute('title', tooltipTextFallback);
                     ipCell.appendChild(span);
                     if (index < ips.length - 1) {
                         ipCell.appendChild(document.createTextNode(', '));
@@ -174,7 +186,7 @@
             <ul>
                 <li>L’analyse des données que vous soumettez dans PlagiUM se fait localement dans votre ordinateur&nbsp;: les données ne sont pas transmises à notre serveur.</li>
                 <li>Les rapports et journaux StudiUM/Moodle et PlagiUM contiennent des informations personnelles (nom, adresses IP, etc.) : ces documents ne doivent pas être diffusés ou partagés de manière inappropriée afin de respecter la confidentialité et la protection des données personnelles.</li>
-                <li>Lorsque vous passez votre souris sur une adresse IP, une infobulle apparaît affichant l'heure associée à cette adresse IP. Cette heure correspond à la première fois que cette adresse IP a été enregistrée dans le rapport.</li>
+                <li>Lorsque vous passez votre souris sur une adresse IP, une infobulle affiche la date/heure de la première action et de la dernière action associées à cette adresse IP.</li>
                 <li>Philosophiquement parlant, cet outil n'a pas été conçu pour être utilisé systématiquement pour chaque évaluation. Il devrait être utilisé uniquement en cas de soupçon de fraude. Son utilisation doit être considérée comme un dernier recours, et non comme une pratique standard.</li>
                 <li>Cet outil n'a pas été conçu pour que l'enseignant prenne en charge lui-même le processus de traitement des fraudes. Tout cas de fraude suspecté doit être traité en respectant les règlements des départements, facultés ou universitaires. Il est important de suivre les procédures établies pour garantir l'équité et le respect des droits des étudiants.</li>
             </ul>
@@ -213,7 +225,7 @@
     </div>
     <footer class="bg-body-tertiary text-center text-lg-start" style="margin-top: 2em;">
         <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
-            <a href="https://github.com/arnauddalayer/StudiUM-PlagiUM/">PlagiUM</a>, version 2026-02-13<br/>
+            <a href="https://github.com/arnauddalayer/StudiUM-PlagiUM/">PlagiUM</a>, version 2026-04-24<br/>
             Arnaud d'Alayer, EBSI, Université de Montréal
         </div>
       </footer>
