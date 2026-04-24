@@ -31,6 +31,6 @@ Pour faire l’analyse :
 
 - L’analyse des données que vous soumettez dans PlagiUM se fait localement dans votre ordinateur : les données ne sont pas transmises à notre serveur.
 - Les rapports et journaux StudiUM/Moodle et PlagiUM contiennent des informations personnelles (nom, adresses IP, etc.) : ces documents ne doivent pas être diffusés ou partagés de manière inappropriée afin de respecter la confidentialité et la protection des données personnelles.
-- Lorsque vous passez votre souris sur une adresse IP, une infobulle apparaît affichant l'heure associée à cette adresse IP. Cette heure correspond à la première fois que cette adresse IP a été enregistrée dans le rapport.
+- Lorsque vous passez votre souris sur une adresse IP, une infobulle apparaît affichant la date/heure de la première action et de la dernière action associées à une adresse IP.
 - Philosophiquement parlant, cet outil n'a pas été conçu pour être utilisé systématiquement pour chaque évaluation. Il devrait être utilisé uniquement en cas de soupçon de fraude. Son utilisation doit être considérée comme un dernier recours, et non comme une pratique standard.
 - Cet outil n'a pas été conçu pour que l'enseignant prenne en charge lui-même le processus de traitement des fraudes. Tout cas de fraude suspecté doit être traité en respectant les règlements des départements, facultés ou universitaires. Il est important de suivre les procédures établies pour garantir l'équité et le respect des droits des étudiants.
